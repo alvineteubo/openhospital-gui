@@ -1,9 +1,6 @@
 package org.isf.reductionplan.gui;
 
-import java.awt.AWTEvent;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -17,6 +14,7 @@ import org.isf.generaldata.MessageBundle;
 import org.isf.menu.manager.Context;
 import org.isf.reductionplan.manager.ReductionplanBrowserManager;
 import org.isf.reductionplan.model.ReductionPlan;
+import org.isf.supplier.gui.SupplierBrowser;
 import org.isf.utils.exception.OHServiceException;
 import org.isf.utils.exception.gui.OHServiceExceptionUtil;
 import org.isf.utils.jobjects.ModalJFrame;
@@ -31,47 +29,57 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	private JButton jEditButton;
 	private JButton jDeteleButton;
 	private JButton jCloseButton;
-	List<ReductionPlan> reductionPlanList;
+	List<ReductionPlan> pReductionplans;
+	private final JFrame myFrame;
 
 	private final String[] pbiColumn = new String[] {
 					MessageBundle.getMessage("angal.common.code.txt"),
 					MessageBundle.getMessage("angal.common.description.txt"),
-					MessageBundle.getMessage("angal.reduction.medicalrate"),
-					MessageBundle.getMessage("angal.reduction.examrate"),
-					MessageBundle.getMessage("angal.reduction.operate"),
-					MessageBundle.getMessage("angal.reduction.otherrate")
+					MessageBundle.getMessage("angal.reduction.medicalrate.col"),
+					MessageBundle.getMessage("angal.reduction.examrate.col"),
+					MessageBundle.getMessage("angal.reduction.operate.col"),
+					MessageBundle.getMessage("angal.reduction.otherrate.col")
 	};
 
-	private final int[] pColumwidth = { 80, 200, 80, 80, 80, 80 };
+	private final int[] pColumnwidth = { 80, 200, 80, 80, 80, 80 };
 	private final ReductionplanBrowserManager manager = Context.getApplicationContext().getBean(ReductionplanBrowserManager.class);
+
+	/**
+	 * This is the default constructor
+	 */
 	public ReductionPlanBrowser() {
+		super();
+		myFrame = this;
 		initialize();
+		setVisible(true);
 	}
 
 	private void initialize() {
 		setTitle (MessageBundle.getMessage("angal.reductionplan.reductionplanbrowser.title"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 620, 300);
-		setContentPane(getMainContentPane());
+		setContentPane(getJContentPane());
 		setLocationRelativeTo(null);
 	}
 
-	private JPanel getMainContentPane() {
+	/**
+	 * This method initializes jContentPane
+	 *
+	 * @return javax.swing.JPanel
+	 */
+
+	private JPanel getJContentPane() {
 		try {
 			if (contentPane == null) {
 				contentPane = new JPanel();
-				// contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 				contentPane.setLayout(new BorderLayout());
-
 				scrollPane = new JScrollPane();
 				contentPane.add(scrollPane, BorderLayout.CENTER);
-
 				table = new JTable();
 				table.setModel(new ReductionPlanModel());
-
 				for (int i = 0; i < pbiColumn.length; i++) {
-					table.getColumnModel().getColumn(i).setMinWidth(pColumwidth[i]);
-					table.getColumnModel().getColumn(i).setMaxWidth(pColumwidth[i]);
+					table.getColumnModel().getColumn(i).setMinWidth(pColumnwidth[i]);
+					table.getColumnModel().getColumn(i).setMaxWidth(pColumnwidth[i]);
 				}
 
 				scrollPane.setViewportView(table);
@@ -82,6 +90,12 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		}
 		return contentPane;
 	}
+
+	/**
+	 * This method initializes jButtonPanel
+	 *
+	 * @return javax.swing.JPanel
+	 */
 	private JPanel getButtonPane() {
 		JPanel panel = new JPanel();
 		panel.add(getJNewButton());
@@ -91,6 +105,11 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		return panel;
 	}
 
+	/**
+	 * This method initializes jNewButton
+	 *
+	 * @return javax.swing.JButton
+	 */
 	private JButton getJNewButton() {
 		if (jNewButton == null) {
 			jNewButton  = new JButton(MessageBundle.getMessage("angal.common.new.btn"));
@@ -100,6 +119,11 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		return jNewButton;
 	}
 
+	/**
+	 * This method initializes jEditButton
+	 *
+	 * @return javax.swing.JButton
+	 */
 	private JButton getJEditButton() {
 		if (jEditButton == null) {
 			jEditButton = new JButton(MessageBundle.getMessage("angal.common.edit.btn"));
@@ -109,6 +133,11 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		return jEditButton;
 	}
 
+	/**
+	 * This method initializes jDeleteButton
+	 *
+	 * @return javax.swing.JButton
+	 */
 	private JButton getJDeteleButton() {
 		if (jDeteleButton == null) {
 			jDeteleButton = new JButton(MessageBundle.getMessage("angal.common.delete.btn"));
@@ -118,31 +147,35 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		return jDeteleButton;
 	}
 
+	/**
+	 * This method initializes jCloseButton
+	 *
+	 * @return javax.swing.JButton
+	 */
 	private JButton getJCloseButton() {
 		if (jCloseButton == null) {
-			jCloseButton = new JButton();
 			jCloseButton = new JButton(MessageBundle.getMessage("angal.common.close.btn"));
 			jCloseButton.setMnemonic(MessageBundle.getMnemonic("angal.common.close.btn.key"));
-			jCloseButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					dispose();
-				}
-			});
+			jCloseButton.addActionListener(actionEvent -> dispose());
 		}
 		return jCloseButton;
 	}
+
+
+
 
 	private class ReductionPlanModel extends DefaultTableModel {
 		private static final long serialVersionUID = 1L;
 
 		public ReductionPlanModel() throws OHServiceException {
-			reductionPlanList = manager.getReductionplan();
+			pReductionplans = manager.getReductionplan();
 		}
 
 		public int getRowCount() {
-			if (reductionPlanList == null)
+			if (pReductionplans == null){
 				return 0;
-			return reductionPlanList.size();
+			}
+			return pReductionplans.size();
 		}
 
 		public String getColumnName(int c) {
@@ -156,19 +189,19 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 		public Object getValueAt(int r, int c) {
 			if (c == 0) {
-				return reductionPlanList.get(r).getId();
+				return pReductionplans.get(r).getId();
 			} else if (c == -1) {
-				return reductionPlanList.get(r);
+				return pReductionplans.get(r);
 			} else if (c == 1) {
-				return reductionPlanList.get(r).getDescription();
+				return pReductionplans.get(r).getDescription();
 			} else if (c == 2) {
-				return reductionPlanList.get(r).getMedicalRate();
+				return pReductionplans.get(r).getMedicalRate();
 			} else if (c == 3) {
-				return reductionPlanList.get(r).getExamRate();
+				return pReductionplans.get(r).getExamRate();
 			} else if (c == 4) {
-				return reductionPlanList.get(r).getOperationRate();
+				return pReductionplans.get(r).getOperationRate();
 			} else if (c == 5) {
-				return reductionPlanList.get(r).getOtherRate();
+				return pReductionplans.get(r).getOtherRate();
 			}
 			return null;
 		}
