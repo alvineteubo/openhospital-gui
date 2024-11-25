@@ -22,8 +22,6 @@
  */
 package org.isf.reductionplan.gui;
 
-
-
 import java.awt.BorderLayout;
 import java.util.List;
 
@@ -45,16 +43,7 @@ import org.isf.utils.jobjects.ModalJFrame;
 public class ReductionPlanBrowser extends ModalJFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTable table;
-	private JScrollPane scrollPane;
-	private JButton jNewButton;
-	private JButton jEditButton;
-	private JButton jDeteleButton;
-	private JButton jCloseButton;
-	List<ReductionPlan> pReductionplans;
 	private final JFrame myFrame;
-
 	private final String[] pbiColumn = new String[] {
 					MessageBundle.getMessage("angal.common.code.txt"),
 					MessageBundle.getMessage("angal.common.description.txt"),
@@ -63,9 +52,16 @@ public class ReductionPlanBrowser extends ModalJFrame {
 					MessageBundle.getMessage("angal.reduction.operate.col"),
 					MessageBundle.getMessage("angal.reduction.otherrate.col")
 	};
-
 	private final int[] pColumnwidth = { 80, 200, 80, 80, 80, 80 };
 	private final ReductionplanBrowserManager manager = Context.getApplicationContext().getBean(ReductionplanBrowserManager.class);
+	List<ReductionPlan> pReductionplans;
+	private JPanel contentPane;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private JButton jNewButton;
+	private JButton jEditButton;
+	private JButton jDeteleButton;
+	private JButton jCloseButton;
 
 	/**
 	 * This is the default constructor
@@ -78,7 +74,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	}
 
 	private void initialize() {
-		setTitle (MessageBundle.getMessage("angal.reductionplan.reductionplanbrowser.title"));
+		setTitle(MessageBundle.getMessage("angal.reductionplan.reductionplanbrowser.title"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 620, 300);
 		setContentPane(getJContentPane());
@@ -87,7 +83,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 	/**
 	 * This method initializes jContentPane
-	 *
 	 * @return javax.swing.JPanel
 	 */
 
@@ -116,7 +111,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 	/**
 	 * This method initializes jButtonPanel
-	 *
 	 * @return javax.swing.JPanel
 	 */
 	private JPanel getButtonPane() {
@@ -130,13 +124,12 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 	/**
 	 * This method initializes jNewButton
-	 *
 	 * @return javax.swing.JButton
 	 */
 	private JButton getJNewButton() {
 		if (jNewButton == null) {
-			jNewButton  = new JButton(MessageBundle.getMessage("angal.common.new.btn"));
-			jNewButton .setMnemonic(MessageBundle.getMnemonic("angal.common.new.btn.key"));
+			jNewButton = new JButton(MessageBundle.getMessage("angal.common.new.btn"));
+			jNewButton.setMnemonic(MessageBundle.getMnemonic("angal.common.new.btn.key"));
 			jNewButton.setEnabled(false);
 		}
 		return jNewButton;
@@ -144,7 +137,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 	/**
 	 * This method initializes jEditButton
-	 *
 	 * @return javax.swing.JButton
 	 */
 	private JButton getJEditButton() {
@@ -158,7 +150,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 	/**
 	 * This method initializes jDeleteButton
-	 *
 	 * @return javax.swing.JButton
 	 */
 	private JButton getJDeteleButton() {
@@ -172,7 +163,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 	/**
 	 * This method initializes jCloseButton
-	 *
 	 * @return javax.swing.JButton
 	 */
 	private JButton getJCloseButton() {
@@ -184,10 +174,8 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		return jCloseButton;
 	}
 
-
-
-
 	private class ReductionPlanModel extends DefaultTableModel {
+
 		private static final long serialVersionUID = 1L;
 
 		public ReductionPlanModel() throws OHServiceException {
@@ -195,7 +183,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		}
 
 		public int getRowCount() {
-			if (pReductionplans == null){
+			if (pReductionplans == null) {
 				return 0;
 			}
 			return pReductionplans.size();
@@ -208,7 +196,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		public int getColumnCount() {
 			return pbiColumn.length;
 		}
-
 
 		public Object getValueAt(int r, int c) {
 			if (c == 0) {
@@ -234,7 +221,6 @@ public class ReductionPlanBrowser extends ModalJFrame {
 			return false;
 		}
 	}
-
 
 }
 
