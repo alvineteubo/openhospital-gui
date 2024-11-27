@@ -54,7 +54,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	};
 	private final int[] pColumnwidth = { 80, 200, 80, 80, 80, 80 };
 	private final ReductionplanBrowserManager manager = Context.getApplicationContext().getBean(ReductionplanBrowserManager.class);
-	List<ReductionPlan> pReductionplans;
+	List<ReductionPlan> reductionplansList;
 	private JPanel contentPane;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -179,14 +179,14 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		private static final long serialVersionUID = 1L;
 
 		public ReductionPlanModel() throws OHServiceException {
-			pReductionplans = manager.getReductionplan();
+			reductionplansList = manager.getReductionplan();
 		}
 
 		public int getRowCount() {
-			if (pReductionplans == null) {
+			if (reductionplansList == null) {
 				return 0;
 			}
-			return pReductionplans.size();
+			return reductionplansList.size();
 		}
 
 		public String getColumnName(int c) {
@@ -199,19 +199,19 @@ public class ReductionPlanBrowser extends ModalJFrame {
 
 		public Object getValueAt(int r, int c) {
 			if (c == 0) {
-				return pReductionplans.get(r).getId();
+				return reductionplansList.get(r).getId();
 			} else if (c == -1) {
-				return pReductionplans.get(r);
+				return reductionplansList.get(r);
 			} else if (c == 1) {
-				return pReductionplans.get(r).getDescription();
+				return reductionplansList.get(r).getDescription();
 			} else if (c == 2) {
-				return pReductionplans.get(r).getMedicalRate();
+				return reductionplansList.get(r).getMedicalRate();
 			} else if (c == 3) {
-				return pReductionplans.get(r).getExamRate();
+				return reductionplansList.get(r).getExamRate();
 			} else if (c == 4) {
-				return pReductionplans.get(r).getOperationRate();
+				return reductionplansList.get(r).getOperationRate();
 			} else if (c == 5) {
-				return pReductionplans.get(r).getOtherRate();
+				return reductionplansList.get(r).getOtherRate();
 			}
 			return null;
 		}

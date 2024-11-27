@@ -21,7 +21,6 @@
  */
 package org.isf.utils.jobjects;
 
-import java.awt.AWTEvent;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -32,7 +31,7 @@ import javax.swing.JFrame;
 /**
  * @author Santhosh Kumar T - santhosh@in.fiorano.com
  */
-public abstract class ModalJFrame extends JFrame {
+public class ModalJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,4 +85,5 @@ public abstract class ModalJFrame extends JFrame {
 
 		frame.setVisible(true);
 	}
+
 }
