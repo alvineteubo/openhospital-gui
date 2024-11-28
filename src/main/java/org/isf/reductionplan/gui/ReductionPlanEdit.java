@@ -1016,7 +1016,7 @@ public class ReductionPlanEdit extends ModalJFrame {
 		// "OTHERRATE"};
 		public Object getValueAt(int r, int c) {
 			if (c == 0) {
-				return medManager.getMedical(medicalReductionList.get(medicalReduction.ge));
+				return medManager.getMedical(medicalReductionList.get(medicalReductionList));
 			} else if (c == -1) {
 				return medicalReductionList.get(r);
 			} else if (c == 1) {
