@@ -1,4 +1,3 @@
-
 /*
  * Open Hospital (www.open-hospital.org)
  * Copyright © 2006-2024 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
@@ -47,10 +46,10 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	private final String[] pbiColumn = new String[] {
 					MessageBundle.getMessage("angal.common.code.txt"),
 					MessageBundle.getMessage("angal.common.description.txt"),
-					MessageBundle.getMessage("angal.reduction.medicalrate.col"),
-					MessageBundle.getMessage("angal.reduction.examrate.col"),
-					MessageBundle.getMessage("angal.reduction.operate.col"),
-					MessageBundle.getMessage("angal.reduction.otherrate.col")
+					MessageBundle.getMessage("angal.reductionplan.medicalrate.col"),
+					MessageBundle.getMessage("angal.reductionplan.examrate.col"),
+					MessageBundle.getMessage("angal.reductionplan.operate.col"),
+					MessageBundle.getMessage("angal.reductionplan.otherrate.col")
 	};
 	private final int[] pColumnwidth = { 80, 200, 80, 80, 80, 80 };
 	private final ReductionplanBrowserManager manager = Context.getApplicationContext().getBean(ReductionplanBrowserManager.class);
@@ -77,6 +76,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		setTitle(MessageBundle.getMessage("angal.reductionplan.reductionplanbrowser.title"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 620, 300);
+		setResizable(false);
 		setContentPane(getJContentPane());
 		setLocationRelativeTo(null);
 	}
@@ -130,7 +130,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		if (jNewButton == null) {
 			jNewButton = new JButton(MessageBundle.getMessage("angal.common.new.btn"));
 			jNewButton.setMnemonic(MessageBundle.getMnemonic("angal.common.new.btn.key"));
-			jNewButton.setEnabled(false);
+			jNewButton.setEnabled(true);
 		}
 		return jNewButton;
 	}
@@ -143,7 +143,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		if (jEditButton == null) {
 			jEditButton = new JButton(MessageBundle.getMessage("angal.common.edit.btn"));
 			jEditButton.setMnemonic(MessageBundle.getMnemonic("angal.common.edit.btn.key"));
-			jEditButton.setEnabled(false);
+			jEditButton.setEnabled(true);
 		}
 		return jEditButton;
 	}
@@ -156,7 +156,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		if (jDeteleButton == null) {
 			jDeteleButton = new JButton(MessageBundle.getMessage("angal.common.delete.btn"));
 			jDeteleButton.setMnemonic(MessageBundle.getMnemonic("angal.common.delete.btn.key"));
-			jDeteleButton.setEnabled(false);
+			jDeteleButton.setEnabled(true);
 		}
 		return jDeteleButton;
 	}
