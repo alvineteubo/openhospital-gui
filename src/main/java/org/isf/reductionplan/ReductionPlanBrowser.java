@@ -22,6 +22,7 @@
 package org.isf.reductionplan.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import org.isf.generaldata.MessageBundle;
@@ -51,8 +53,8 @@ public class ReductionPlanBrowser extends ModalJFrame {
 					MessageBundle.getMessage("angal.reductionplan.operate.col"),
 					MessageBundle.getMessage("angal.reductionplan.otherrate.col")
 	};
-	private final int[] pColumnwidth = { 80, 200, 80, 80, 80, 80 };
-	private final ReductionplanBrowserManager manager = Context.getApplicationContext().getBean(ReductionplanBrowserManager.class);
+	private final int[] pColumnwidth = { 80, 200, 90, 90, 90, 100 };
+	private final ReductionplanBrowserManager reductionplanBrowserManager = Context.getApplicationContext().getBean(ReductionplanBrowserManager.class);
 	List<ReductionPlan> reductionplansList;
 	private JPanel contentPane;
 	private JTable table;
@@ -69,16 +71,16 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		super();
 		myFrame = this;
 		initialize();
-		setVisible(true);
 	}
 
 	private void initialize() {
 		setTitle(MessageBundle.getMessage("angal.reductionplan.reductionplanbrowser.title"));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 620, 300);
-		setResizable(false);
 		setContentPane(getJContentPane());
+		setMinimumSize(new Dimension(650, 400));
+		pack();
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setVisible(true);
 	}
 
 	/**
@@ -87,24 +89,22 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	 */
 
 	private JPanel getJContentPane() {
-		try {
-			if (contentPane == null) {
-				contentPane = new JPanel();
-				contentPane.setLayout(new BorderLayout());
-				scrollPane = new JScrollPane();
-				contentPane.add(scrollPane, BorderLayout.CENTER);
-				table = new JTable();
+		if (contentPane == null) {
+			contentPane = new JPanel();
+			contentPane.setLayout(new BorderLayout());
+			scrollPane = new JScrollPane();
+			table = new JTable();
+			try {
 				table.setModel(new ReductionPlanModel());
-				for (int i = 0; i < pbiColumn.length; i++) {
-					table.getColumnModel().getColumn(i).setMinWidth(pColumnwidth[i]);
-					table.getColumnModel().getColumn(i).setMaxWidth(pColumnwidth[i]);
-				}
-
-				scrollPane.setViewportView(table);
-				contentPane.add(getButtonPane(), BorderLayout.SOUTH);
+			} catch (OHServiceException e) {
+				OHServiceExceptionUtil.showMessages(e);
 			}
-		} catch (OHServiceException e) {
-			OHServiceExceptionUtil.showMessages(e);
+			for (int i = 0; i < pbiColumn.length; i++) {
+				table.getColumnModel().getColumn(i).setMinWidth(pColumnwidth[i]);
+			}
+			scrollPane.setViewportView(table);
+			contentPane.add(scrollPane, BorderLayout.CENTER);
+			contentPane.add(getButtonPane(), BorderLayout.SOUTH);
 		}
 		return contentPane;
 	}
@@ -115,10 +115,10 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	 */
 	private JPanel getButtonPane() {
 		JPanel panel = new JPanel();
-		panel.add(getJNewButton());
-		panel.add(getJEditButton());
-		panel.add(getJDeteleButton());
-		panel.add(getJCloseButton());
+		panel.add(getNewButton());
+		panel.add(getEditButton());
+		panel.add(getDeteleButton());
+		panel.add(getCloseButton());
 		return panel;
 	}
 
@@ -126,11 +126,10 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	 * This method initializes jNewButton
 	 * @return javax.swing.JButton
 	 */
-	private JButton getJNewButton() {
+	private JButton getNewButton() {
 		if (jNewButton == null) {
 			jNewButton = new JButton(MessageBundle.getMessage("angal.common.new.btn"));
 			jNewButton.setMnemonic(MessageBundle.getMnemonic("angal.common.new.btn.key"));
-			jNewButton.setEnabled(true);
 		}
 		return jNewButton;
 	}
@@ -139,11 +138,10 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	 * This method initializes jEditButton
 	 * @return javax.swing.JButton
 	 */
-	private JButton getJEditButton() {
+	private JButton getEditButton() {
 		if (jEditButton == null) {
 			jEditButton = new JButton(MessageBundle.getMessage("angal.common.edit.btn"));
 			jEditButton.setMnemonic(MessageBundle.getMnemonic("angal.common.edit.btn.key"));
-			jEditButton.setEnabled(true);
 		}
 		return jEditButton;
 	}
@@ -152,11 +150,10 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	 * This method initializes jDeleteButton
 	 * @return javax.swing.JButton
 	 */
-	private JButton getJDeteleButton() {
+	private JButton getDeteleButton() {
 		if (jDeteleButton == null) {
 			jDeteleButton = new JButton(MessageBundle.getMessage("angal.common.delete.btn"));
 			jDeteleButton.setMnemonic(MessageBundle.getMnemonic("angal.common.delete.btn.key"));
-			jDeteleButton.setEnabled(true);
 		}
 		return jDeteleButton;
 	}
@@ -165,7 +162,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 	 * This method initializes jCloseButton
 	 * @return javax.swing.JButton
 	 */
-	private JButton getJCloseButton() {
+	private JButton getCloseButton() {
 		if (jCloseButton == null) {
 			jCloseButton = new JButton(MessageBundle.getMessage("angal.common.close.btn"));
 			jCloseButton.setMnemonic(MessageBundle.getMnemonic("angal.common.close.btn.key"));
@@ -179,7 +176,7 @@ public class ReductionPlanBrowser extends ModalJFrame {
 		private static final long serialVersionUID = 1L;
 
 		public ReductionPlanModel() throws OHServiceException {
-			reductionplansList = manager.getReductionplan();
+			reductionplansList = reductionplanBrowserManager.getReductionplan();
 		}
 
 		public int getRowCount() {
