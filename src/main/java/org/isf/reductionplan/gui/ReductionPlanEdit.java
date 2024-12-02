@@ -831,7 +831,7 @@ public class ReductionPlanEdit extends ModalJFrame {
 		public Object getValueAt(int r, int c) {
 			if (c == 0) {
 				try {
-					return examManager.getExams(String.valueOf(examReductionList.get(r).getExam())).getLast();
+					return examManager.getExams(String.valueOf(examReductionList.get(r).getExam()));
 				} catch (OHServiceException e) {
 					try {
 						throw new OHServiceException((List<OHExceptionMessage>) e);
@@ -1016,7 +1016,15 @@ public class ReductionPlanEdit extends ModalJFrame {
 		// "OTHERRATE"};
 		public Object getValueAt(int r, int c) {
 			if (c == 0) {
-				return medManager.getMedical(medicalReductionList.get(medicalReductionList));
+				try {
+					return medManager.getMedicals();
+				} catch (OHServiceException e) {
+					try {
+						throw new OHServiceException(new OHExceptionMessage("error"));
+					} catch (OHServiceException ex) {
+						throw new RuntimeException(ex);
+					}
+									}
 			} else if (c == -1) {
 				return medicalReductionList.get(r);
 			} else if (c == 1) {
